@@ -61,7 +61,7 @@ def expand_leaf(node: MCTSNode, board: Board, state):
     """
     # Let's first check to ensure that the node is not terminal (has untried actions)
     if not node.untried_actions:
-        return None, state # TODO:  I don't know if this is the right way to handle this. Need to play with it later when the rest is done
+        return None, state
 
     # Get the next untried action and try to expand upon it
     actionToExpand = node.untried_actions.pop()

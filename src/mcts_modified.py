@@ -39,6 +39,7 @@ def traverse_nodes(node: MCTSNode, board: Board, state, bot_identity: int):
 
     return node, state
 
+
 def expand_leaf(node: MCTSNode, board: Board, state):
     """ Adds a new leaf to the tree by creating a new child node for the given node (if it is non-terminal).
 
@@ -64,9 +65,18 @@ def expand_leaf(node: MCTSNode, board: Board, state):
 
 
 def rollout(board: Board, state):
+    """ Simulates possible game outcomes from the given state and returns the best final state it found
+
+        Args:
+            board:  The game setup.
+            state:  The state of the game.
+
+        Returns:
+            state: The best terminal game state
+
+        """
     current_player = board.current_player(state)
     opponent = 1 if current_player == 2 else 2
-
 
     while not board.is_ended(state):
         legal_actions = board.legal_actions(state)
@@ -85,10 +95,13 @@ def rollout(board: Board, state):
     return state
 
 
-def heuristic(board: Board, state, opponent: int, current_player: int, action):
-    """ Evaluates the given state of the board for the bot.
+def heuristic(board: Board, state, opponent: int, currentPlayer: int, action):
+    """ Evaluates the given state and returns a score for the bot
 
     Args:
+        opponent: The id of the opponent player.
+        action: The action to test
+        currentPlayer: the id of the current player
         board:  The game setup.
         state:  The state of the game.
 
@@ -99,11 +112,10 @@ def heuristic(board: Board, state, opponent: int, current_player: int, action):
     pointGreatness = 0
 
     # Points if we are playing
-    if current_player is not opponent:
+    if currentPlayer is not opponent:
         # Win, duh
         if board.win_values(state) is not None:
             pointGreatness += 100000000000
-
 
         # We like center squares
         if action[2:] == (1, 1):
